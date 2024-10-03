@@ -78,12 +78,14 @@ class _GlobalStats(threading.local):
         self.autotune_remote = _GlobalItemStats()
         self.fx_graph = _GlobalItemStats()
         self.triton = _GlobalItemStats()
+        self.aot_autograd = _GlobalItemStats()
 
     def reset(self) -> None:
         self.autotune_local.reset()
         self.autotune_remote.reset()
         self.fx_graph.reset()
         self.triton.reset()
+        self.aot_autograd.reset()
 
     def get_stat(self, name: str) -> _GlobalItemStats:
         return getattr(self, name)
@@ -94,6 +96,7 @@ class _GlobalStats(threading.local):
             ("autotune_remote", self.autotune_remote),
             ("fx_graph", self.fx_graph),
             ("triton", self.triton),
+            ("aot_autograd", self.aot_autograd),
         )
 
         print("Cache Stats:", file=sys.stderr)
@@ -213,6 +216,12 @@ class PatchCaches(contextlib.AbstractContextManager):
             ctx = patch(
                 "triton.fb.fb_memcache.FbMemcacheRemoteKernelCache.backend_override_cls",
                 MockBackend.with_name("triton"),
+            )
+            self._stack.enter_context(ctx)
+
+            ctx = patch(
+                "torch._inductor.fb.remote_cache.FbRemoteAOTAutogradCache.backend_override_cls",
+                MockBackend.with_name("aot_autograd"),
             )
             self._stack.enter_context(ctx)
 
