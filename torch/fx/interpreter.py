@@ -294,6 +294,7 @@ class Interpreter:
 
         # Execute the method and return the result
         assert isinstance(target, str)
+
         return getattr(self_obj, target)(*args_tail, **kwargs)
 
     @compatibility(is_backward_compatible=True)

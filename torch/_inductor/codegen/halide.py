@@ -706,7 +706,7 @@ class HalideKernel(SIMDKernel):
         self.buffer_aliases: Dict[str, List[str]] = defaultdict(list)
         self.has_indirect_indexing = False
 
-    def create_cse_var(self, name, bounds=None):
+    def create_cse_var(self, name, bounds=None, dtype=None):
         self.body.writeline(f"{name} = hl.Func({name!r})")
         return HalideCSEVariable(name, bounds)
 

@@ -176,10 +176,10 @@ def deduce_dtype_for_cpp_cse_variable(name, *args, **kwargs):
 
 
 class CppCSEVariable(CSEVariable):
-    def __init__(self, name, bounds: ValueRanges[Any]) -> None:
+    def __init__(self, name, bounds: ValueRanges[Any], dtype: torch.dtype) -> None:
         super().__init__(name, bounds)
         self.is_vec = False
-        self.dtype: Optional[torch.dtype] = None
+        self.dtype: Optional[torch.dtype] = dtype
         self.dependent_itervars: Set[sympy.Symbol] = set()
 
     def __repr__(self) -> str:
