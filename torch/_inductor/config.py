@@ -344,12 +344,8 @@ max_autotune_subproc_terminate_timeout_seconds = 2.0
 # If autotuning in subprocess, whether to use multiple devices
 autotune_multi_device = os.environ.get("TORCHINDUCTOR_AUTOTUNE_MULTI_DEVICE") == "1"
 
-coordinate_descent_tuning = (
-    os.environ.get("TORCHINDUCTOR_COORDINATE_DESCENT_TUNING") == "1"
-)
-coordinate_descent_check_all_directions = (
-    os.environ.get("TORCHINDUCTOR_COORDINATE_DESCENT_CHECK_ALL_DIRECTIONS") == "1"
-)
+coordinate_descent_tuning = True
+coordinate_descent_check_all_directions = True
 coordinate_descent_search_radius = int(
     os.environ.get("TORCHINDUCTOR_COORDINATE_DESCENT_RADIUS", "1")
 )
@@ -1149,7 +1145,7 @@ class rocm:
 
 
 # Backend to use for CPU codegen either "cpp" or "triton" (experimental) or "halide" (experimental)
-cpu_backend = "cpp"
+cpu_backend = "triton"
 
 # Backend to use for CUDA codegen either "triton" or "halide" (experimental)
 cuda_backend = "triton"
